@@ -1,8 +1,8 @@
 import re
 from datetime import datetime
 
-from src.no_mas_repost_tecnoempleo.classes.offer import Offer
-from src.no_mas_repost_tecnoempleo.utils import get_soup
+from classes.offer import Offer
+from utils import get_soup
 
 """
 Modificado a partir de la versión del proyecto de mankolepanto:
@@ -50,7 +50,7 @@ def extract_info(job):
 def scrape_jobs(url, keyword):
     """Realiza el scraping de ofertas de trabajo desde la URL proporcionada y crea un CSV con los datos del día objetivo."""
     all_jobs = []
-    full_url = url + "&te=" + keyword  # TODO Menuda chapuza ese &, también te digo
+    full_url = url + "?te=" + keyword 
 
     soup = get_soup(full_url)
     ofertas = soup.find_all('div', class_='p-3 border rounded mb-3 bg-white')

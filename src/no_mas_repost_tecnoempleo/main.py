@@ -1,14 +1,15 @@
 from datetime import datetime, timedelta
 import configparser
+import os
 from scraper import scrape_jobs
-from src.no_mas_repost_tecnoempleo.dbHandler import create_db, insert_offers
+from dbHandler import create_db, insert_offers
 
 
 def get_last_24h():
 
     # Get my config
     config = configparser.ConfigParser()
-    config.read('../../config/config.ini')
+    config.read('./config/config.ini')
     url = config.get('TECNO', 'TECNO_24H_URL')
     keywords_list = config.get('SCRAPPER', 'KEYWORDS').split(',')
 
