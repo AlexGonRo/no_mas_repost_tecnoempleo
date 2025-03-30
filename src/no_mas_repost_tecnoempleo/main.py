@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 import configparser
 import os
-from scraper import scrape_jobs
-from dbHandler import create_db, insert_offers
+from .dbHandler import create_db, insert_offers
+from .scraper import scrape_jobs
 
 
 def get_last_24h():

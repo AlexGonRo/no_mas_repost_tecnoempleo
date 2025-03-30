@@ -1,12 +1,12 @@
 import re
 from datetime import datetime
 
-from classes.offer import Offer
-from utils import get_soup
+from .popos.offer import Offer
+from .utils.utils import get_soup
 
 """
 Modificado a partir de la versión del proyecto de mankolepanto:
-https://github.com/mankolepanto/Scrap_TecnoEmpleo/tree/main
+https://github.com/mankolepanto/Scrap_TecnoEmpleo
 """
 
 def extract_info(job):

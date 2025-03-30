@@ -1,8 +1,10 @@
 import sqlite3
 
+from .utils.constants import DB_PATH
+
 # Función para crear la base de datos y la tabla
 def create_db():
-    conn = sqlite3.connect('offers.db') # TODO Hardcodeado aquí de mala manera, pero bueno
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     #cursor.execute('''
@@ -27,7 +29,7 @@ def create_db():
 
 # Función para insertar una oferta en la base de datos
 def insert_offer(offer):
-    conn = sqlite3.connect('offers.db')
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     try:

@@ -1,6 +1,3 @@
-
-
-
 class Offer:
 
     def __init__(self, date=None, job_name=None, description=None, link=None, id=None, company_name=None):
