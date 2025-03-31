@@ -1,3 +1,4 @@
+import time
 import re
 from datetime import datetime
 
@@ -46,33 +47,38 @@ def extract_info(job):
         print(f"Error al procesar la oferta de trabajo: {e}")
         return None
 
+def find_next_page(soup):
+    """Busca y devuelve el enlace de la siguiente página, si existe."""
+    next_page_tag = soup.find('a', class_='page-link', string='siguiente')
+    return next_page_tag['href'] if next_page_tag else None
+
 
 def scrape_jobs(url, keyword):
     """Realiza el scraping de ofertas de trabajo desde la URL proporcionada y crea un CSV con los datos del día objetivo."""
     all_jobs = []
-    full_url = url + "?te=" + keyword 
+    full_url = url + "?te=" + keyword
 
-    soup = get_soup(full_url)
-    ofertas = soup.find_all('div', class_='p-3 border rounded mb-3 bg-white')
-    # Si no hemos encontrado trabajos en esta página
-    if not ofertas:
-        print("NO HAY TRABAJOS HOY.")
-        return all_jobs
+    while full_url:
+        soup = get_soup(full_url)
+        ofertas = soup.find_all('div', class_='p-3 border rounded mb-3 bg-white')
+        # Si no hemos encontrado trabajos en esta página
+        if not ofertas:
+            print("NO HAY TRABAJOS HOY.")
+            return all_jobs
 
-    for job in ofertas:
-        job_info = extract_info(job)
+        for job in ofertas:
+            job_info = extract_info(job)
 
-        if job_info:
-            all_jobs.append(job_info)
+            if job_info:
+                all_jobs.append(job_info)
 
-    # Buscar la siguiente página si es que la hay
-    # TODO Tendría que arreglar esto...
-    '''url = find_next_page(soup)
-    if url:
-        print(f"Pasando a la siguiente página: {url}")
-        time.sleep(3)
-    else:
-        print("No hay más páginas.")
-    '''
+        # Buscar la siguiente página si es que la hay
+        full_url = find_next_page(soup)
+        if full_url:
+            print(f"Pasando a la siguiente página: {full_url}")
+            time.sleep(3)
+        else:
+            print("No hay más páginas.")
+
 
     return all_jobs

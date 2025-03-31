@@ -5,7 +5,7 @@ from .dbHandler import create_db, insert_offers
 from .scraper import scrape_jobs
 
 
-def get_last_24h():
+def get_jobs():
 
     # Get my config
     config = configparser.ConfigParser()
@@ -34,4 +34,4 @@ def get_last_24h():
 
 if __name__ == "__main__":
 
-    get_last_24h()
+    get_jobs()
