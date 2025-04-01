@@ -1,14 +1,16 @@
+import logging
 import time
 import re
 from datetime import datetime
 
-from .popos.offer import Offer
-from .utils.utils import get_soup
+from src.popos.offer import Offer
+from src.utils.utils import get_soup
 
 """
 Modificado a partir de la versión del proyecto de mankolepanto:
 https://github.com/mankolepanto/Scrap_TecnoEmpleo
 """
+logger = logging.getLogger(__name__)
 
 def extract_info(job):
     """Extrae la información relevante de una oferta de trabajo."""
@@ -44,7 +46,7 @@ def extract_info(job):
         return offer
 
     except Exception as e:
-        print(f"Error al procesar la oferta de trabajo: {e}")
+        logger.error(f"Error al procesar la oferta de trabajo: {e}")
         return None
 
 def find_next_page(soup):
@@ -59,11 +61,12 @@ def scrape_jobs(url, keyword):
     full_url = url + "?te=" + keyword
 
     while full_url:
+        logger.info(f"Scrapping {full_url}")
         soup = get_soup(full_url)
         ofertas = soup.find_all('div', class_='p-3 border rounded mb-3 bg-white')
         # Si no hemos encontrado trabajos en esta página
         if not ofertas:
-            print("NO HAY TRABAJOS HOY.")
+            logger.info("No jobs today.")
             return all_jobs
 
         for job in ofertas:
@@ -75,10 +78,10 @@ def scrape_jobs(url, keyword):
         # Buscar la siguiente página si es que la hay
         full_url = find_next_page(soup)
         if full_url:
-            print(f"Pasando a la siguiente página: {full_url}")
+            logger.info(f"Next page...")
             time.sleep(3)
         else:
-            print("No hay más páginas.")
+            logger.info("No more pages left.")
 
 
     return all_jobs

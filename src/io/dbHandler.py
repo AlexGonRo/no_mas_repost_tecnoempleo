@@ -1,6 +1,9 @@
 import sqlite3
+import logging
 
-from .utils.constants import DB_PATH
+from src.utils.constants import DB_PATH
+
+logger = logging.getLogger(__name__)
 
 # Función para crear la base de datos y la tabla
 def create_db():
@@ -38,11 +41,11 @@ def insert_offer(offer):
         VALUES (?, ?, ?, ?, ?, ?)
         ''', (offer.id, offer.job_name, offer.company_name, offer.date.isoformat(), offer.link, offer.description))
         conn.commit()
-        print(f"Offer '{offer.job_name}' at '{offer.company_name}' added successfully.")
+        logger.debug(f"Offer '{offer.job_name}' at '{offer.company_name}' added successfully.")
         return offer  # Indicate successful insertion
     except sqlite3.IntegrityError as a:
         # Si hay un error de integridad (como una oferta duplicada), no hacemos nada
-        print(f"Offer '{offer.job_name}' at '{offer.company_name}' is a duplicate and was not added.")
+        logger.debug(f"Offer '{offer.job_name}' at '{offer.company_name}' is a duplicate and was not added.")
         return False  # Indicate duplicate
     finally:
         conn.close()
